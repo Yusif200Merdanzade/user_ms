@@ -1,6 +1,9 @@
 package az.company.userms.controller;
 
+import az.company.userms.entity.Account;
 import az.company.userms.entity.User;
+import az.company.userms.exception.UserAlreadyExistsException;
+import az.company.userms.model.AccountDto;
 import az.company.userms.model.JwtRequest;
 import az.company.userms.model.UserDTO;
 import az.company.userms.service.UserService;
@@ -9,9 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/user")
 @CrossOrigin(origins = "*")
 public class UserController {
 
@@ -19,7 +24,7 @@ public class UserController {
     private UserService userDetailsService;
 
     @GetMapping("/{id}")
-    public Optional<User> getUserById(@PathVariable Long id){
+    public Optional<User> getUserById(@PathVariable Long id) {
         return userDetailsService.getUserById(id);
     }
 
@@ -29,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/register")
-    public ResponseEntity<?> saveUser(@RequestBody UserDTO user) {
+    public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws UserAlreadyExistsException {
         return ResponseEntity.ok(userDetailsService.save(user));
     }
 
@@ -37,6 +42,11 @@ public class UserController {
     public UserDetails getUserDetails(@RequestParam("username") String username) {
         return userDetailsService.loadUserByUsername(username);
 
+    }
+
+    @GetMapping("/accounts")
+    public List<AccountDto> getAccounts(@RequestParam Long userId) {
+        return userDetailsService.getActiveAccounts(userId);
     }
 
     @GetMapping(value = "/verify")
