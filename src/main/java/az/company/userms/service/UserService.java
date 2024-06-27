@@ -12,6 +12,7 @@ import az.company.userms.model.UserDTO;
 import az.company.userms.repository.AccountRepository;
 import az.company.userms.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -33,18 +34,25 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
 
 
-    private final UserDetailsService userDetailsService;
+    @Autowired
+    private  UserDetailsService userDetailsService;
 
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    private final AccountRepository accountRepository;
+    @Autowired
+    private AccountRepository accountRepository;
+
     private final AccountMapper accountMapper;
 
-    private final JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
-    private final AuthenticationManager authenticationManager;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-    private final PasswordEncoder bcryptEncoder;
+    @Autowired
+    private PasswordEncoder bcryptEncoder;
 
 
     public Optional<User> getUserById(Long id) {
@@ -88,7 +96,7 @@ public class UserService implements UserDetailsService {
 
     public List<AccountDto> getActiveAccounts(Long userId) {
         List<Account> accounts = accountRepository.findByUserIdAndStatus(userId, '1');
-        return accounts.stream().map(accountMapper::entitiyToDto).collect(Collectors.toList());
+        return accounts.stream().map(accountMapper::entityToDto).collect(Collectors.toList());
     }
 
     private void authenticate(String username, String password) throws Exception {

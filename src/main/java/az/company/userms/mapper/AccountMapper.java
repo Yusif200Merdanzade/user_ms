@@ -8,5 +8,5 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public abstract class AccountMapper {
 
-    public abstract AccountDto entitiyToDto(Account entities);
+    public abstract AccountDto entityToDto(Account entities);
 }
