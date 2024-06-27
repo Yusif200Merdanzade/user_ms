@@ -21,4 +21,5 @@ public class Account {
     private Long id;
     private Long userId;
     private Character status;
+    private String balance;
 }

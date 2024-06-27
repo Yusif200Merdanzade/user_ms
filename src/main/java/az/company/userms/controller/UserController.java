@@ -1,6 +1,5 @@
 package az.company.userms.controller;
 
-import az.company.userms.entity.Account;
 import az.company.userms.entity.User;
 import az.company.userms.exception.UserAlreadyExistsException;
 import az.company.userms.model.AccountDto;
